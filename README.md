@@ -1,17 +1,24 @@
 # About Gskewer
 Gskewer is a tool to skew transform gcode file coordinates to account for axis misalignment of a 3D printer.
 
-In order to use Gskewer you will need to print a test cube, take accurate measurements of the cube, then input those measurements as arguments for Gskewer. 
+This is a fork of a repository I found a link to in some forum. I don't recall which. A new search found this page whis is likly simular or the same as what I first saw.
 
-The G-code file to be modified, the measured error (in mm), and the distance from zero where the measurement was taken is then entered into skew.py before being run.
+[https://www.thingiverse.com/groups/cura/forums/general/topic:31706](https://www.thingiverse.com/groups/cura/forums/general/topic:31706)
 
+In order to use Gskewer you will need to print a test ~~cube~~ squares, take accurate measurements of the ~~cube~~ squares, then input those measurements as arguments 
+for Gskewer. 
+
+~~The G-code file to be modified, the measured error (in mm), and the distance from zero where the measurement was taken is then entered into skew.py before being run.~~
+
+The method I used was different that what I struck out above. Note that I have a version of Python on my laptop and run scripts from the command line.
 
 # Preparing to use Gskewer
-The task of measuring the error between axis pairs is shown in good detail at http://www.zs1jen.org/Station_Manuals/Reference/3D_Printers/14_RepRapPro_-_Axis_compensation.pdf
+I devised my own way to use the calibration square. First I should point out the skew error I was concerned about was in XY 
+as the XY skew became apparent after printing a box with a tight fitting lid. The square for the XY plain that I printed looked like this:
 
-The files to be printed for the above process are at https://github.com/reprappro/RepRapFirmware/blob/master/STL/calibration_90mm.stl
+![](calibration_square.png)
 
-The general idea of the measurements required and which arguments they correspond to is illustrated below.
+** *working on edit* **
 
 ![MechanizedMedic](https://github.com/MechanizedMedic/gskewer/raw/master/gskewer_measuring1.png "Positive skew error.")
 ![MechanizedMedic](https://github.com/MechanizedMedic/gskewer/raw/master/gskewer_measuring2.png "Negative skew error.")
