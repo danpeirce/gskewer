@@ -51,13 +51,10 @@ Used python IDLE as a calculator
 ~~~~
  
 
-![MechanizedMedic](https://github.com/MechanizedMedic/gskewer/raw/master/gskewer_measuring1.png "Positive skew error.")
-![MechanizedMedic](https://github.com/MechanizedMedic/gskewer/raw/master/gskewer_measuring2.png "Negative skew error.")
-
 Note 
 
 # Using Gskewer
-`gskewer [arguements] file`
+`skew.py [arguements] file`
 
 Gskewer will automatically generate a new gcode file with "-skewed" added to the file name. If the output file name already exists gskewer will delete 
 the existing file and write a new one.
@@ -78,6 +75,12 @@ which created the file used to check calibration
  I set yztan and zxtan to zero in my case as I was only correcting for xy axis skew.
 
 ### Gskewer Arguments
+
+Two different combinations of arguments can be used.  These images define the meaning
+
+![MechanizedMedic](https://github.com/MechanizedMedic/gskewer/raw/master/gskewer_measuring1.png "Positive skew error.")
+![MechanizedMedic](https://github.com/MechanizedMedic/gskewer/raw/master/gskewer_measuring2.png "Negative skew error.")
+
 `--xyerr`
 	Error in the X-axis for the XY pair in mm. (This argument cannot be used with "xytan")
 
@@ -87,8 +90,11 @@ which created the file used to check calibration
 `--xytan`
 	The error in the ZX pair as a tangent. (zxerr/zxlen)
 	As shown in a previous section I used the calculation
+	
+~~~~python	
 	>>> alpha = m.acos(142.15**2/2/99.96**2-1)
     >>> m.tan(m.pi/2-alpha)
+~~~~
 
 `--yzerr`
 	Error in the Y-axis for the YZ pair in mm. (This argument cannot be used with "yztan")
