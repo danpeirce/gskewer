@@ -18,28 +18,64 @@ as the XY skew became apparent after printing a box with a tight fitting lid. Th
 
 ![](calibration_square.png)
 
-** *working on edit* **
+The STL for that is located at [YACS (Yet Another Calibration Square](https://www.thingiverse.com/thing:2563185)
+
+Regardless of skew one would expect X1 = Y1 = 100 mm
+
+I measured X1 as 99.97 mm  
+and Y1 as 99.55 mm
+
+The Y1 measurement was far enough out to warrant correction before making further measurements.
+100/99.55 is 1.0042 so I applied that correction to Y by scaling Y to 100.42 then reprinted the square with the new scaling.
+
+Note that X1 and Y1 were both measured carefully. Careful to measure along the axis rather than perpendicular to the other axis!
+
+**Square #2 (with Y scaling)** was measured with the following result:
+
+AB is now 99.96
+AC is now 142.15
+
+With these two diagonals it is possible to find the tangent required by **skew.py**.
+See first equation at [https://www-formula.com/geometry/rhombus/angles](https://www-formula.com/geometry/rhombus/angles)
+ 
+**skew.py** needs the tangent of the angle **pi/2-alpha**
+(note python works in radians not degrees)
+
+Used python IDLE as a calculator
+
+~~~~python
+>>> import math as m
+>>> alpha = m.acos(142.15**2/2/99.96**2-1)
+>>> m.tan(m.pi/2-alpha)
+0.011140566393579231
+~~~~
+ 
 
 ![MechanizedMedic](https://github.com/MechanizedMedic/gskewer/raw/master/gskewer_measuring1.png "Positive skew error.")
 ![MechanizedMedic](https://github.com/MechanizedMedic/gskewer/raw/master/gskewer_measuring2.png "Negative skew error.")
 
-These measurements are to be taken for each of the three axis pairs of the cube: XY, YZ, and ZX.
-
-You will end up with six measurements/arguments: xylen, xyerr, yzlen, yzerr, zxlen, and zxerr.
-
-The initial six measurements can be simplified to a tangent argument by dividing the error by length. (ie: xyerr/xylen=xytan) The three tangent arguments are: xytan, yztan, and zxtan.
-
+Note 
 
 # Using Gskewer
 `gskewer [arguements] file`
 
-Gskewer will automatically generate a new gcode file with "-skewed" added to the file name. If the output file name already exists gskewer will delete the existing file and write a new one.
+Gskewer will automatically generate a new gcode file with "-skewed" added to the file name. If the output file name already exists gskewer will delete 
+the existing file and write a new one.
 
-### Examples
+### Example
 
-`gskewer --xyerr 1.2 --xylen 80 Cube80mm.gcode` will adjust the X coordinate proportionally by -1.2 mm for every 80mm in the Y coordinate. Also, only the XY plane is affected as other arguements are not used. The output file will be "Cube80mm-skewed.gcode".
+Called the file **skew.py** the command line as follows:
 
-`gskewer --xytan 0.015 Cube80mm.gcode` is equivalent to the example above, as `xytan = xyerr / xylen`.
+~~~~bash
+python skew.py --xytan 0.01114 --yztan 0.0 --zxtan 0.0 *YACS*.gcode
+~~~~
+
+which created the file used to check calibration
+*YACS*-skewed.gcode
+ 
+ {subsitute the name of the gcode file in place of *YACS*
+ 
+ I set yztan and zxtan to zero in my case as I was only correcting for xy axis skew.
 
 ### Gskewer Arguments
 `--xyerr`
@@ -50,6 +86,9 @@ Gskewer will automatically generate a new gcode file with "-skewed" added to the
 
 `--xytan`
 	The error in the ZX pair as a tangent. (zxerr/zxlen)
+	As shown in a previous section I used the calculation
+	>>> alpha = m.acos(142.15**2/2/99.96**2-1)
+    >>> m.tan(m.pi/2-alpha)
 
 `--yzerr`
 	Error in the Y-axis for the YZ pair in mm. (This argument cannot be used with "yztan")
